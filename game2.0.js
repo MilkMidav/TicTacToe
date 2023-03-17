@@ -39,11 +39,9 @@ function ticTacToe(board) {
     return currentPlayer;
   }
 
-  const restart = (value) => {
-    if (value.toLowerCase() === 'r') {
-      currentPlayer = 'X';
-      return board.splice(0, board.length, null, null, null, null, null, null, null, null, null);
-    }
+  const restart = () => {
+    currentPlayer = 'X';
+    return board.splice(0, board.length, null, null, null, null, null, null, null, null, null);
   };
 
   const isValidValue = (value) => {
@@ -121,7 +119,8 @@ rl.on('line', input => {
     return;
   }
 
-  if (restart(input)) {
+  if (input.toLowerCase() === 'r') {
+    restart();
     console.log(`The game has been restarted!`);
     console.log(`X starts first`);
     console.log(field(board));
