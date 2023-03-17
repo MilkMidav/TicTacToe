@@ -39,13 +39,41 @@ function ticTacToe() {
     currentPlayer.nextMove = 'X';
   }
 
+  const field = () => {
+    let result = ``;
+    const copyIndex = [];
+  
+    for (let i = 0; i < board.length; i++) {
+      if (board[i] === null) {
+        copyIndex.push(`>${i + 1}`);
+        continue; 
+      } 
+      copyIndex.push(`${board[i]} `);
+    }
+  
+    for (let i = 0; i < copyIndex.length; i++) {
+      if (i === 0) {
+        result += `|  ${copyIndex[i]} `;
+        continue;
+      }
+      if (i === (copyIndex.length - 1)) {
+        result += `|  ${copyIndex[i]} |`;
+        continue;
+      }
+      if ((i + 1) % 3 === 0) {
+        result += `|  ${copyIndex[i]} |\n`;
+        continue;
+      }
+      
+      result += `|  ${copyIndex[i]} `;
+    }
+  
+    return result;
+  };
+
   const restart = () => {
     currentPlayer.nextMove = 'X';
     return board.splice(0, board.length, null, null, null, null, null, null, null, null, null);
-  };
-
-  const isValidValue = (value) => {
-    return isNaN(Number(value));
   };
 
   const getWinner = () => {
@@ -66,41 +94,13 @@ function ticTacToe() {
     return !board.includes(null);
   };
 
-  return { move, restart, isValidValue, getWinner, isTie, board, currentPlayer };
+  return { move, restart, field, getWinner, isTie, board, currentPlayer };
 }
 
-const { move, restart, isValidValue, getWinner, isTie, board, currentPlayer } = ticTacToe();
+const { move, restart, field, getWinner, isTie, board, currentPlayer } = ticTacToe();
 
-const field = () => {
-  let result = ``;
-  const copyIndex = [];
-
-  for (let i = 0; i < board.length; i++) {
-    if (board[i] === null) {
-      copyIndex.push(`>${i + 1}`);
-      continue; 
-    } 
-    copyIndex.push(`${board[i]} `);
-  }
-
-  for (let i = 0; i < copyIndex.length; i++) {
-    if (i === 0) {
-      result += `|  ${copyIndex[i]} `;
-      continue;
-    }
-    if (i === (copyIndex.length - 1)) {
-      result += `|  ${copyIndex[i]} |`;
-      continue;
-    }
-    if ((i + 1) % 3 === 0) {
-      result += `|  ${copyIndex[i]} |\n`;
-      continue;
-    }
-    
-    result += `|  ${copyIndex[i]} `;
-  }
-
-  return result;
+const isValidValue = (value) => {
+  return isNaN(Number(value));
 };
 
 console.log(`Let's play a game of Tic-Tac-Toe!
