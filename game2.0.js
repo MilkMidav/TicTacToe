@@ -39,7 +39,7 @@ function ticTacToe() {
     currentPlayer.nextMove = 'X';
   }
 
-  const field = () => {
+  const printField = () => {
     let result = ``;
     const copyIndex = [];
   
@@ -94,10 +94,10 @@ function ticTacToe() {
     return !board.includes(null);
   };
 
-  return { move, restart, field, getWinner, isTie, board, currentPlayer };
+  return { move, restart, printField, getWinner, isTie, board, currentPlayer };
 }
 
-const { move, restart, field, getWinner, isTie, board, currentPlayer } = ticTacToe();
+const { move, restart, printField, getWinner, isTie, board, currentPlayer } = ticTacToe();
 
 const isValidValue = (value) => {
   return isNaN(Number(value));
@@ -106,7 +106,7 @@ const isValidValue = (value) => {
 console.log(`Let's play a game of Tic-Tac-Toe!
 Enter a cell number (without '>') to make a move!
 X starts first`);
-console.log(field());
+console.log(printField());
 
 rl.prompt();
 
@@ -121,7 +121,7 @@ rl.on('line', input => {
     restart();
     console.log(`The game has been restarted!`);
     console.log(`X starts first`);
-    console.log(field());
+    console.log(printField());
     rl.prompt();
 
     return; 
@@ -130,7 +130,7 @@ rl.on('line', input => {
   if (isValidValue(input)) {
     console.log(`Enter a valid cell number`);
     console.log(`Try again:`);
-    console.log(field());
+    console.log(printField());
     console.log(`Next move is ${currentPlayer.nextMove}`);
     rl.prompt();
 
@@ -160,14 +160,14 @@ rl.on('line', input => {
   } catch(err) {
     console.log(`${err.message}`);
     console.log(`Try again:`);
-    console.log(field(board));
+    console.log(printField(board));
     console.log(`Next move is ${currentPlayer.nextMove}`);
 
     rl.prompt();
     return; 
   }
 
-  console.log(field(board));
+  console.log(printField(board));
     
   if (getWinner()) {
     if (currentPlayer.nextMove === 'X') {
