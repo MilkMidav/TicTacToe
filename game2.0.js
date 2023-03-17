@@ -6,7 +6,9 @@ const rl = readline.createInterface({
 });
 
 
-function ticTacToe(board) {
+function ticTacToe() {
+  const board = [null, null, null, null, null, null, null, null, null];
+
   let currentPlayer = 'X';
 
   const isValidRangeOfCell = (value) => {
@@ -48,7 +50,7 @@ function ticTacToe(board) {
     return isNaN(Number(value));
   };
 
-  const getWinner = (board) => {
+  const getWinner = () => {
     const winningCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
     for (let i = 0; i < winningCombinations.length; i++) {
@@ -62,18 +64,18 @@ function ticTacToe(board) {
     return false;
   };
 
-  const isTie = (board) => {
+  const isTie = () => {
     return !board.includes(null);
   };
 
-  return { move, restart, isValidValue, getWinner, isTie, getCurrentPlayer };
+  return { move, restart, isValidValue, getWinner, isTie, getCurrentPlayer, board };
 }
 
-const board = [null, null, null, null, null, null, null, null, null];
 
-const { move, restart, isValidValue, getWinner, isTie, getCurrentPlayer } = ticTacToe(board);
 
-const field = (board) => {
+const { move, restart, isValidValue, getWinner, isTie, getCurrentPlayer, board } = ticTacToe();
+
+const field = () => {
   let result = ``;
   const copyIndex = [];
 
@@ -139,7 +141,7 @@ rl.on('line', input => {
     return; 
   }
   
-  const endGame = getWinner(board) || isTie(board);
+  const endGame = getWinner() || isTie();
 
   if (endGame && input !== 'r' && input !== 'q') {
     console.log('The game is finished. Hit R to restart or Q to quit');
@@ -171,7 +173,7 @@ rl.on('line', input => {
 
   console.log(field(board));
     
-  if (getWinner(board)) {
+  if (getWinner()) {
     if (getCurrentPlayer() === 'X') {
       console.log(`0 won! Hit R to restart the game`);
       rl.prompt();
@@ -184,7 +186,7 @@ rl.on('line', input => {
     return; 
   }
 
-  if (isTie(board)) {
+  if (isTie()) {
     console.log(`It's a tie! Hit R to restart`);
     rl.prompt();
 
