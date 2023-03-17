@@ -9,30 +9,30 @@ const rl = readline.createInterface({
 function ticTacToe(board) {
   let currentPlayer = 'X';
 
+  const isValidRangeOfCell = (value) => {
+    if (value < 0 || value >= board.length) {
+      throw new Error('Cannot occupy a non-existing cell');
+    }
+
+    return;
+  };
+
+  const isCellOccupied = (value) => {
+    if (board[value] !== null && board[value]) throw new Error('Cannot make a move. The cell is already occupied');
+    return;
+  };
+
   function move(value) {
-    const isCellOccupied = () => {
-      if (board[value] !== null && board[value]) throw new Error('Cannot make a move. The cell is already occupied');
+    isValidRangeOfCell(value);
+    isCellOccupied(value);
 
-      const isValidRangeOfCell = () => {
-        if (value < 0 || value >= board.length) {
-          throw new Error('Cannot occupy a non-existing cell');
-        }
-    
-        board[value] = currentPlayer;
-    
-        if (currentPlayer === 'X') {
-          currentPlayer = '0';
-          return;
-        }
-        currentPlayer = 'X';
-  
-        return;
-      };
+    board[value] = currentPlayer;
 
-      return isValidRangeOfCell();
-    };
-
-    return isCellOccupied();
+    if (currentPlayer === 'X') {
+      currentPlayer = '0';
+      return;
+    }
+    currentPlayer = 'X';
   }
 
   function getCurrentPlayer() {
