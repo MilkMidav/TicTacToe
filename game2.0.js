@@ -9,7 +9,9 @@ const rl = readline.createInterface({
 function ticTacToe() {
   const board = [null, null, null, null, null, null, null, null, null];
 
-  let currentPlayer = 'X';
+  const currentPlayer = {
+    nextMove: 'X',
+  };
 
   const isValidRangeOfCell = (value) => {
     if (value < 0 || value >= board.length) {
@@ -28,21 +30,17 @@ function ticTacToe() {
     isValidRangeOfCell(value);
     isCellOccupied(value);
 
-    board[value] = currentPlayer;
+    board[value] = currentPlayer.nextMove;
 
-    if (currentPlayer === 'X') {
-      currentPlayer = '0';
+    if (currentPlayer.nextMove === 'X') {
+      currentPlayer.nextMove = '0';
       return;
     }
-    currentPlayer = 'X';
-  }
-
-  function getCurrentPlayer() {
-    return currentPlayer;
+    currentPlayer.nextMove = 'X';
   }
 
   const restart = () => {
-    currentPlayer = 'X';
+    currentPlayer.nextMove = 'X';
     return board.splice(0, board.length, null, null, null, null, null, null, null, null, null);
   };
 
@@ -68,12 +66,10 @@ function ticTacToe() {
     return !board.includes(null);
   };
 
-  return { move, restart, isValidValue, getWinner, isTie, getCurrentPlayer, board };
+  return { move, restart, isValidValue, getWinner, isTie, board, currentPlayer };
 }
 
-
-
-const { move, restart, isValidValue, getWinner, isTie, getCurrentPlayer, board } = ticTacToe();
+const { move, restart, isValidValue, getWinner, isTie, board, currentPlayer } = ticTacToe();
 
 const field = () => {
   let result = ``;
@@ -110,7 +106,7 @@ const field = () => {
 console.log(`Let's play a game of Tic-Tac-Toe!
 Enter a cell number (without '>') to make a move!
 X starts first`);
-console.log(field(board));
+console.log(field());
 
 rl.prompt();
 
@@ -125,7 +121,7 @@ rl.on('line', input => {
     restart();
     console.log(`The game has been restarted!`);
     console.log(`X starts first`);
-    console.log(field(board));
+    console.log(field());
     rl.prompt();
 
     return; 
@@ -134,8 +130,8 @@ rl.on('line', input => {
   if (isValidValue(input)) {
     console.log(`Enter a valid cell number`);
     console.log(`Try again:`);
-    console.log(field(board));
-    console.log(`Next move is ${getCurrentPlayer()}`);
+    console.log(field());
+    console.log(`Next move is ${currentPlayer.nextMove}`);
     rl.prompt();
 
     return; 
@@ -151,7 +147,7 @@ rl.on('line', input => {
   }
 
   if (input === '') {
-    console.log(`Next move is ${getCurrentPlayer()}`);
+    console.log(`Next move is ${currentPlayer.nextMove}`);
     rl.prompt();
 
     return; 
@@ -165,7 +161,7 @@ rl.on('line', input => {
     console.log(`${err.message}`);
     console.log(`Try again:`);
     console.log(field(board));
-    console.log(`Next move is ${getCurrentPlayer()}`);
+    console.log(`Next move is ${currentPlayer.nextMove}`);
 
     rl.prompt();
     return; 
@@ -174,7 +170,7 @@ rl.on('line', input => {
   console.log(field(board));
     
   if (getWinner()) {
-    if (getCurrentPlayer() === 'X') {
+    if (currentPlayer.nextMove === 'X') {
       console.log(`0 won! Hit R to restart the game`);
       rl.prompt();
 
@@ -193,7 +189,7 @@ rl.on('line', input => {
     return;
   }
 
-  console.log(`Next move is ${getCurrentPlayer()}`);
+  console.log(`Next move is ${currentPlayer.nextMove}`);
 
   rl.prompt();
 });
