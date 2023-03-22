@@ -26,7 +26,7 @@ function ticTacToe() {
       if (board[a] === board[b] && board[b] === board[c] && board[c] === 'X') return 'X';
     }
 
-    return;
+    return null;
   };
 
   function move(value) {
