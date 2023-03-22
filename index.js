@@ -15,6 +15,20 @@ function ticTacToe() {
     return board[value] !== null && board[value];
   };
 
+  const getWinner = () => {
+    const winningCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+
+    for (let i = 0; i < winningCombinations.length; i++) {
+      const [a, b, c] = winningCombinations[i];
+
+      if (board[a] === board[b] && board[b] === board[c] && board[c] === '0') return '0';
+      
+      if (board[a] === board[b] && board[b] === board[c] && board[c] === 'X') return 'X';
+    }
+
+    return;
+  };
+
   function move(value) {
     if (isValidRangeOfCell(value)) throw new Error('Cannot occupy a non-existing cell');
 
@@ -34,25 +48,11 @@ function ticTacToe() {
     return board.splice(0, board.length, null, null, null, null, null, null, null, null, null);
   };
 
-  const isWin = () => {
-    const winningCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-
-    for (let i = 0; i < winningCombinations.length; i++) {
-      const [a, b, c] = winningCombinations[i];
-
-      if (board[a] === board[b] && board[b] === board[c] && board[c] === '0') return true;
-      
-      if (board[a] === board[b] && board[b] === board[c] && board[c] === 'X') return true;
-    }
-
-    return false;
-  };
-
   const isTie = () => {
     return !board.includes(null);
   };
 
-  return { move, restart, isWin, isTie, board, currentPlayer };
+  return { move, restart, getWinner, isTie, board, currentPlayer };
 }
 
 const rl = readline.createInterface({
@@ -60,7 +60,7 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-const { move, restart, isWin, isTie, board, currentPlayer } = ticTacToe();
+const { move, restart, getWinner, isTie, board, currentPlayer } = ticTacToe();
 
 const printField = () => {
   let result = ``;
@@ -106,6 +106,15 @@ console.log(printField());
 rl.prompt();
 
 rl.on('line', input => {
+  const endGame = getWinner() || isTie();
+
+  if (endGame && input !== 'r' && input !== 'q') {
+    console.log('The game is finished. Hit R to restart or Q to quit');
+    rl.prompt();
+
+    return;
+  }
+
   if (input.toLowerCase() === 'q') {
     rl.close();
 
@@ -131,15 +140,6 @@ rl.on('line', input => {
 
     return; 
   }
-  
-  const endGame = isWin() || isTie();
-
-  if (endGame && input !== 'r' && input !== 'q') {
-    console.log('The game is finished. Hit R to restart or Q to quit');
-    rl.prompt();
-
-    return;
-  }
 
   if (input === '') {
     console.log(`Next move is ${currentPlayer.nextMove}`);
@@ -147,8 +147,8 @@ rl.on('line', input => {
 
     return; 
   }
-
-  const index = input - 1;
+  
+  const index = Number(input) - 1;
 
   try {
     move(index);
@@ -162,19 +162,15 @@ rl.on('line', input => {
     return; 
   }
 
-  console.log(printField());
-    
-  if (isWin()) {
-    if (currentPlayer.nextMove === 'X') {
-      console.log(`0 won! Hit R to restart the game`);
-      rl.prompt();
+  const winner = getWinner();
 
-      return;
-    }
-    console.log(`X won! Hit R to restart the game`);
+  console.log(printField());
+
+  if (winner) {
+    console.log(`${winner} won! Hit R to restart the game`);
     rl.prompt();
 
-    return; 
+    return;
   }
 
   if (isTie()) {
