@@ -1,3 +1,5 @@
+const readline = require('readline');
+
 function ticTacToe() {
   const board = [null, null, null, null, null, null, null, null, null];
 
@@ -32,7 +34,7 @@ function ticTacToe() {
     return board.splice(0, board.length, null, null, null, null, null, null, null, null, null);
   };
 
-  const getWinner = () => {
+  const isWin = () => {
     const winningCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 
     for (let i = 0; i < winningCombinations.length; i++) {
@@ -50,17 +52,15 @@ function ticTacToe() {
     return !board.includes(null);
   };
 
-  return { move, restart, getWinner, isTie, board, currentPlayer };
+  return { move, restart, isWin, isTie, board, currentPlayer };
 }
-
-const readline = require('readline');
 
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
-const { move, restart, getWinner, isTie, board, currentPlayer } = ticTacToe();
+const { move, restart, isWin, isTie, board, currentPlayer } = ticTacToe();
 
 const printField = () => {
   let result = ``;
@@ -132,7 +132,7 @@ rl.on('line', input => {
     return; 
   }
   
-  const endGame = getWinner() || isTie();
+  const endGame = isWin() || isTie();
 
   if (endGame && input !== 'r' && input !== 'q') {
     console.log('The game is finished. Hit R to restart or Q to quit');
@@ -164,7 +164,7 @@ rl.on('line', input => {
 
   console.log(printField());
     
-  if (getWinner()) {
+  if (isWin()) {
     if (currentPlayer.nextMove === 'X') {
       console.log(`0 won! Hit R to restart the game`);
       rl.prompt();
