@@ -60,15 +60,11 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    cd tic_tac_toe
    ```
-4. Кun the game with this command:
+4. Run the game with this command:
    ```sh
    node index.js
    ```
    <!-- CONTACT -->
-
-## Contact
-
-Milk Midav - [@twitter](https://twitter.com/MilkMidav) - wadim017@gmail.com
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
