@@ -27,7 +27,6 @@
       </ul>
     </li>
     <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
